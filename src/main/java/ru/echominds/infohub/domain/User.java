@@ -33,7 +33,7 @@ public class User {
 
     // рейтинги которые человек ставил на статьи
     @OneToMany(mappedBy = "user")
-    private List<ArticleRating> articleArticleRatings;
+    private List<ArticleRating> articleRatings;
 
     //роли еще над будет
 }

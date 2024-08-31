@@ -33,7 +33,10 @@ public class User {
 
     // рейтинги которые человек ставил на статьи
     @OneToMany(mappedBy = "user")
-    private List<ArticleRating> articleRatings;
+    private List<Rating> ratings;
 
-    //роли еще над будет
+    //роли еще над будет подключить
+
+//    соц кредит будет как типа рейтинг для профиля
+//    private Long socialCredit;
 }

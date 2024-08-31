@@ -34,8 +34,8 @@ public class Article {
 
     // Хз как сделаем теги
 
-    // планирую типа сделаем как на мете, будет 100 макс оценкой и кажды ставить оценку от 0 до 10.
+    // +1 и -1
     @OneToMany(mappedBy = "article")
-    private List<ArticleRating> articleRating;
+    private List<Rating> rating;
 
 }

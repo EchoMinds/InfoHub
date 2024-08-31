@@ -36,6 +36,6 @@ public class Article {
 
     // планирую типа сделаем как на мете, будет 100 макс оценкой и кажды ставить оценку от 0 до 10.
     @OneToMany(mappedBy = "article")
-    private List<Rating> rating;
+    private List<ArticleRating> articleRating;
 
 }

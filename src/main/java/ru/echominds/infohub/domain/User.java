@@ -31,8 +31,9 @@ public class User {
     @Column(name = "creation_time")
     private LocalDateTime creationTime;
 
+    // рейтинги которые человек ставил на статьи
     @OneToMany(mappedBy = "user")
-    private List<Rating> ratings;
+    private List<ArticleRating> articleArticleRatings;
 
     //роли еще над будет
 }

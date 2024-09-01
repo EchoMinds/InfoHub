@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "rating", schema = "infoHub_backend")
+@Table(name = "rating", schema = "public")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,34 +1,38 @@
 package ru.echominds.infohub.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 
 @Entity
-@Data
+@Data@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "user", schema = "public")
 public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String avatar;
-
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "avatar_url")
+    private String avatar;
+
+    @Column(name = "email")
     private String email;
 
     // рейтинги которые человек ставил на статьи
+    // !! НЕ ЕГО РЕЙТИНГ !!
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
 
-
-    //роли еще над будет подключить
 
 //    соц кредит будет как типа рейтинг для профиля
 //    private Long socialCredit;

@@ -6,7 +6,12 @@ spring:
     username: postgres
     url: jdbc:postgresql://localhost:5432/InfoHub
     driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: public
   jpa:
-    hibernate:
-      ddl-auto: none
     show-sql: true
+    properties:
+      hibernate.globally_quoted_identifiers: true
+      hibernate.format_sql: true
+  flyway:
+    locations: classpath:db/migration

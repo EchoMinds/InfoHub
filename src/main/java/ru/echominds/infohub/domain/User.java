@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -17,6 +19,7 @@ import java.util.List;
 public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
@@ -33,7 +36,24 @@ public class User extends Auditable {
     @OneToMany(mappedBy = "user")
     private List<Rating> ratings;
 
+    // ElementCollection хрень что бы храниц многа ролей и шоб пользоваться енумом, а не делать отдельны класс
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<Role> roles = new HashSet<>();
 
 //    соц кредит будет как типа рейтинг для профиля
 //    private Long socialCredit;
+
+
+    public User(String name, String avatar,
+                String email, List<Rating> ratings,
+                Set<Role> roles) {
+        this.name = name;
+        this.avatar = avatar;
+        this.email = email;
+        this.ratings = ratings;
+        this.roles = roles;
+    }
 }

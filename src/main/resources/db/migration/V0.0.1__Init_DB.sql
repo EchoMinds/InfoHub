@@ -28,27 +28,11 @@ CREATE TABLE IF NOT EXISTS rating
     article_id BIGINT references article (id) on delete cascade not null
 );
 
-CREATE TABLE IF NOT EXISTS community
+CREATE TABLE IF NOT EXISTS user_roles
 (
-    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY
-
-);
-
-CREATE TABLE IF NOT EXISTS community_role
-(
-    id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_id      BIGINT REFERENCES "user" (id)    NOT NULL,
-    community_id BIGINT REFERENCES community (id) NOT NULL,
-    type         VARCHAR(50)                      NOT NULL,
-    UNIQUE (user_id, community_id, type)
-);
-
-CREATE TABLE IF NOT EXISTS website_role
-(
-    id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_id    BIGINT REFERENCES "user" (id)  NOT NULL,
-    article_id BIGINT REFERENCES article (id) NOT NULL,
-    type       VARCHAR(50)                    NOT NULL,
-    UNIQUE (user_id, article_id, type)
+    user_id BIGINT       NOT NULL,
+    role    VARCHAR(255) NOT NULL,
+    PRIMARY KEY (user_id, role),
+    FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 

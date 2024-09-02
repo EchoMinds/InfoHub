@@ -2,9 +2,6 @@ package ru.echominds.infohub.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import ru.echominds.infohub.domain.role.CommunityRole;
-
-import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 

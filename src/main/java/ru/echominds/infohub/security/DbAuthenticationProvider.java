@@ -1,4 +1,4 @@
-package ru.echominds.infohub.domain.security;
+package ru.echominds.infohub.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -7,7 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
-import ru.echominds.infohub.domain.repositories.UserRepository;
+import ru.echominds.infohub.repositories.UserRepository;
 
 @Component
 @RequiredArgsConstructor

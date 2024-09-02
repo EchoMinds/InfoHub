@@ -1,4 +1,4 @@
-package ru.echominds.infohub.domain.security;
+package ru.echominds.infohub.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

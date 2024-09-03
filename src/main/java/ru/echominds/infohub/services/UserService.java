@@ -3,7 +3,6 @@ package ru.echominds.infohub.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.echominds.infohub.convertors.UserConvertor;
-import ru.echominds.infohub.domain.Role;
 import ru.echominds.infohub.domain.User;
 import ru.echominds.infohub.dtos.UserDTO;
 import ru.echominds.infohub.exceptions.UserNotFoundException;
@@ -19,12 +18,14 @@ public class UserService {
     private final UserConvertor userConvertor;
 
     public UserDTO getUser(Long id) {
-        User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User userFound = userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
         return userConvertor.convertUserToUserDTO(userFound);
     }
 
     public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream().map(userConvertor::convertUserToUserDTO).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(userConvertor::convertUserToUserDTO)
+                .collect(Collectors.toList());
     }
 
     public void create(UserDTO createdUser) {

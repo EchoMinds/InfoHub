@@ -6,7 +6,7 @@ import ru.echominds.infohub.domain.User;
 import ru.echominds.infohub.dtos.UserDTO;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @Component
 public class UserConvertor {
@@ -15,9 +15,7 @@ public class UserConvertor {
         return new UserDTO(
                 userFound.getName(),
                 userFound.getEmail(),
-                userFound.getAvatar(),
-                userFound.getRoles().stream().map(Enum::name).collect(Collectors.toSet())
-        );
+                userFound.getAvatar());
     }
 
     public User convertUserDTOToUser(UserDTO userDTO) {
@@ -26,7 +24,7 @@ public class UserConvertor {
                 userDTO.avatar(),
                 userDTO.email(),
                 new ArrayList<>(),
-                userDTO.roles().stream().map(Role::valueOf).collect(Collectors.toSet())
+                Set.of(Role.USER)
         );
     }
 }

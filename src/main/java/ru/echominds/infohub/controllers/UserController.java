@@ -8,7 +8,7 @@ import ru.echominds.infohub.dtos.UserDTO;
 import ru.echominds.infohub.services.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -20,11 +20,10 @@ public class UserController {
     }
 
     // сделаем через Principal если надо будет
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> getUser() {
         return null;
     }
-
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllUsers() {
@@ -32,8 +31,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addUser(@RequestBody UserDTO user) {
-        userService.add(user);
+    public ResponseEntity<?> createUser(@RequestBody UserDTO user) {
+        userService.create(user);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

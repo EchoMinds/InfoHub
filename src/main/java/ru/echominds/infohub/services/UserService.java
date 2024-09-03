@@ -27,8 +27,7 @@ public class UserService {
         return userRepository.findAll().stream().map(userConvertor::convertUserToUserDTO).collect(Collectors.toList());
     }
 
-
-    public void add(UserDTO createdUser) {
+    public void create(UserDTO createdUser) {
         userRepository.save(
                 userConvertor.convertUserDTOToUser(createdUser)
         );
@@ -40,8 +39,6 @@ public class UserService {
         userFound.setName(userDto.name() != null ? userDto.name() : userFound.getName());
         userFound.setEmail(userDto.email() != null ? userDto.email() : userFound.getEmail());
         userFound.setAvatar(userDto.avatar() != null ? userDto.avatar() : userFound.getAvatar());
-        userFound.setRoles(userDto.roles() != null ?
-                userDto.roles().stream().map(Role::valueOf).collect(Collectors.toSet()) : userFound.getRoles());
 
         userRepository.save(userFound);
     }

@@ -26,4 +26,15 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name = "article_id", referencedColumnName = "id")
     private Article article;
+
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "id=" + id +
+                ", value=" + value +
+                ", userId=" + user.getId() +
+                ", article=" + article +
+                '}';
+    }
 }

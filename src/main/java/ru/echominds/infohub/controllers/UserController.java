@@ -14,15 +14,10 @@ public class UserController {
     private final UserService userService;
 
     // для поиска по id
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.getUser(id), HttpStatus.FOUND);
-    }
-
-    // сделаем через Principal если надо будет
-    @GetMapping
-    public ResponseEntity<?> getUser() {
-        return null;
+    public UserDTO getUserById(@PathVariable Long id) {
+        return userService.getUser(id);
     }
 
     @GetMapping("/all")
@@ -42,13 +37,15 @@ public class UserController {
 
         userService.updateUser(id,userDto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // Учел че сказал черны кит
+    @Deprecated
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

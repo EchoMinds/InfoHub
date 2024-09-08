@@ -15,3 +15,17 @@ spring:
       hibernate.format_sql: true
   flyway:
     locations: classpath:db/migration
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+            client-secret:
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo

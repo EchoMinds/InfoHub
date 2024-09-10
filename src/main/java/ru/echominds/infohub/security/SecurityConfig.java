@@ -26,7 +26,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpAuth -> httpAuth
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/user").authenticated()
+                        .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .oauth2Login(httpSec -> httpSec
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig

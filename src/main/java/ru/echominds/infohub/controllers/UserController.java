@@ -4,6 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import ru.echominds.infohub.dtos.UserDTO;
 import ru.echominds.infohub.services.UserService;
@@ -13,6 +17,13 @@ import ru.echominds.infohub.services.UserService;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    // получаем юзера через Секур
+    @GetMapping
+    public String getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userService.getCurrentUsername(authentication);
+    }
 
     // для поиска по id
     @ResponseStatus(HttpStatus.OK)

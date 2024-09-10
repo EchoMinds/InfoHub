@@ -2,6 +2,9 @@ package ru.echominds.infohub.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import ru.echominds.infohub.convertors.UserConvertor;
 import ru.echominds.infohub.domain.User;
@@ -50,5 +53,20 @@ public class UserService {
         User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
         userRepository.delete(userFound);
+    }
+
+    public String getCurrentUsername(Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+
+        // ГУГЛ такое возвращает
+        if (principal instanceof OAuth2User) {
+            OAuth2User oauth2User = (OAuth2User) principal;
+            return oauth2User.getAttribute("name");
+        } else if (principal instanceof UserDetails) { // по сути юзердетейлс должны другие вернуть
+            UserDetails userDetails = (UserDetails) principal;
+            return userDetails.getUsername();
+        } else { // анонимус
+            return "anonymous";
+        }
     }
 }

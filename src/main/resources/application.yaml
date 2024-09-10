@@ -20,8 +20,8 @@ spring:
       client:
         registration:
           google:
-            client-id:
-            client-secret:
+            client-id: your key
+            client-secret: your secret
             scope: profile, email
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
         provider:

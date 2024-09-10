@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS "user"
     "name"     VARCHAR                  NOT NULL,
     avatar_url VARCHAR,
     email      VARCHAR                  not null,
-    password   VARCHAR                  not null,
 
     created_at timestamp with time zone not null,
     updated_at timestamp with time zone not null
@@ -36,3 +35,6 @@ CREATE TABLE IF NOT EXISTS user_roles
     FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 
+ALTER TABLE "public"."user"
+    ALTER COLUMN "created_at" SET DEFAULT now(),
+    ALTER COLUMN "updated_at" SET DEFAULT now();

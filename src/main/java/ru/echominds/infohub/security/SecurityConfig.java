@@ -1,5 +1,6 @@
 package ru.echominds.infohub.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -13,6 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private CustomOAuth2Service customOAuth2Service;
+
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http
@@ -23,6 +28,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(httpAuth -> httpAuth
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
+                .oauth2Login(httpSec -> httpSec
+                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                                .userService(customOAuth2Service)))
                 .build();
     }
 }

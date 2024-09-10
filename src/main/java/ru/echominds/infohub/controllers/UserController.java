@@ -22,8 +22,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUsers(   @RequestParam("offset") Integer offset,
-                                            @RequestParam("limit") Integer limit) {
+    public ResponseEntity<?> getAllUsers(   @RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                                            @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
         return new ResponseEntity<>(userService.getAllUsers(PageRequest.of(offset, limit)), HttpStatus.OK);
     }
 

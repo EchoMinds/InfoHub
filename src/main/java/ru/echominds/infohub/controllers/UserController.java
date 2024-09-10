@@ -1,6 +1,7 @@
 package ru.echominds.infohub.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,9 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUsers() {
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    public ResponseEntity<?> getAllUsers(   @RequestParam("offset") Integer offset,
+                                            @RequestParam("limit") Integer limit) {
+        return new ResponseEntity<>(userService.getAllUsers(PageRequest.of(offset, limit)), HttpStatus.OK);
     }
 
     @PostMapping

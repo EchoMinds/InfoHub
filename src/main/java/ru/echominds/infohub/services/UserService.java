@@ -1,6 +1,7 @@
 package ru.echominds.infohub.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.echominds.infohub.convertors.UserConvertor;
 import ru.echominds.infohub.domain.User;
@@ -23,8 +24,8 @@ public class UserService {
         return userConvertor.convertUserToUserDTO(userFound);
     }
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream().map(userConvertor::convertUserToUserDTO)
+    public List<UserDTO> getAllUsers(PageRequest pageRequest) {
+        return userRepository.findAll(pageRequest).stream().map(userConvertor::convertUserToUserDTO)
                 .collect(Collectors.toList());
     }
 

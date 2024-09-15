@@ -17,4 +17,15 @@ public class GlobalExceptionHandler {
         //return 404
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ArticleNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleException(ArticleNotFoundException e) {
+        ErrorResponse response = new ErrorResponse(
+                "Article not found",
+                System.currentTimeMillis()
+        );
+
+        //return 404
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }

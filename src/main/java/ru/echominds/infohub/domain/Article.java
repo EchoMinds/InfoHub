@@ -11,6 +11,14 @@ import java.util.List;
 @Entity
 @Table(name = "Article")
 public class Article extends Auditable {
+    public Article() {}
+
+    public Article(User user, String title, String text, Long views) {
+        this.user = user;
+        this.title = title;
+        this.text = text;
+        this.views = views;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +33,9 @@ public class Article extends Auditable {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "text")
+    private String text;
+
     @Column(name = "views")
     private Long views;
 
@@ -34,6 +45,5 @@ public class Article extends Auditable {
     @OneToMany(mappedBy = "article")
     private List<Comment> comments;
 
-    //next tags
-
+    //next issue: tags
 }

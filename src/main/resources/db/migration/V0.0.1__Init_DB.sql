@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS article
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id    BIGINT REFERENCES "user" (id) ON DELETE CASCADE NOT NULL,
     title      VARCHAR                                         NOT NULL,
+    text       TEXT,
     views      BIGINT DEFAULT 0,
 
     created_at timestamp with time zone                        not null,

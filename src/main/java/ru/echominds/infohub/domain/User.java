@@ -40,6 +40,9 @@ public class User extends Auditable {
     @Column(name = "role")
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Article> Articles;
+
 //    соц кредит будет как типа рейтинг для профиля
 //    private Long socialCredit;
 

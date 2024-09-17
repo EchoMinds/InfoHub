@@ -1,6 +1,7 @@
 package ru.echominds.infohub.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.echominds.infohub.convertors.ArticleConvertor;
 import ru.echominds.infohub.domain.Article;
@@ -30,8 +31,8 @@ public class ArticleService {
         return articleConvertor.convertArticleToArticleDTO(article, totalRating);
     }
 
-    public List<ArticleDTO> getAllArticles() {
-        return articleRepository.findAll().stream().map(x -> articleConvertor.convertArticleToArticleDTO(
+    public List<ArticleDTO> getAllArticles(PageRequest pageRequest) {
+        return articleRepository.findAll(pageRequest).stream().map(x -> articleConvertor.convertArticleToArticleDTO(
                 x, articleRepository.getArticleRatingById(x.getArticleId())
         )).toList();
     }
@@ -48,6 +49,12 @@ public class ArticleService {
 
     public void deleteArticle(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
+
+        //delete article on user data
+        User author = userRepository.findById(article.getUser().getId()).orElseThrow(UserNotFoundException::new);
+        author.getArticles().remove(article);
+        userRepository.save(author);
+
         articleRepository.delete(article);
     }
 

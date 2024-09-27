@@ -35,7 +35,7 @@ public class ArticleController {
 
     @PatchMapping("/{id}")
     public HttpStatus patchArticle(@RequestBody ArticleDTO updatedArticleDTO,
-                             @PathVariable Long id) {
+                                   @PathVariable Long id) {
         articleService.updateArticle(id, updatedArticleDTO);
 
         return HttpStatus.NO_CONTENT;
@@ -48,5 +48,4 @@ public class ArticleController {
         return HttpStatus.NO_CONTENT;
 
     }
-
 }

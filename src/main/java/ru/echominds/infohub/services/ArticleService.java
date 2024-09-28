@@ -30,6 +30,7 @@ public class ArticleService {
     private User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+
         if (!(auth instanceof AnonymousAuthenticationToken) && auth != null) {
             //get curUser
             OAuth2User curUser = (OAuth2User) auth.getPrincipal();
@@ -40,6 +41,10 @@ public class ArticleService {
         }
 
         return null;
+    }
+
+    public void test(){
+        getCurrentUser();
     }
 
 

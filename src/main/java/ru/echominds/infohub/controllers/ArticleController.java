@@ -16,6 +16,11 @@ import java.util.List;
 public class ArticleController {
     private final ArticleService articleService;
 
+    @GetMapping("/test")
+    public void test() {
+        articleService.test();
+    }
+
     @GetMapping
     public List<ArticleDTO> getAllArticles(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
                                            @RequestParam(value = "limit", defaultValue = "10") Integer limit) {

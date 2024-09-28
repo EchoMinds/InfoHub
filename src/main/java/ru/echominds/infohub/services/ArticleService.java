@@ -18,7 +18,6 @@ import ru.echominds.infohub.exceptions.UserNotFoundException;
 import ru.echominds.infohub.repositories.ArticleRepository;
 import ru.echominds.infohub.repositories.UserRepository;
 
-import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -52,11 +51,6 @@ public class ArticleService {
             throw new UserNotAuthorArticle();
         }
     }
-
-    public void test() {
-        getCurrentUser();
-    }
-
 
     public ArticleDTO getArticle(Long id) {
         Article article = articleRepository.findById(id)

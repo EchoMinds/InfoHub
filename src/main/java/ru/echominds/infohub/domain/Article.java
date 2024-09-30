@@ -45,3 +45,4 @@ public class Article extends Auditable {
         this.views = views;
     }
 }
+

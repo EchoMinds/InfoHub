@@ -49,7 +49,6 @@ public class ArticleService {
         articleRepository.save(articleConvertor.convertArticleDTOtoArticle(articleDTO, author));
     }
 
-    // добавить проверку на авторство или модерацию
     public void updateArticle(Long id, ArticleDTO updatedArticleDTO) {
         Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
 
@@ -62,7 +61,6 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    // добавить проверку на авторство или модерацию
     public void deleteArticle(Long id) {
         Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
 

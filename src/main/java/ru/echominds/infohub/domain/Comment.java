@@ -3,7 +3,6 @@ package ru.echominds.infohub.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -40,3 +39,4 @@ public class Comment extends Auditable {
         this.rating = rating;
     }
 }
+

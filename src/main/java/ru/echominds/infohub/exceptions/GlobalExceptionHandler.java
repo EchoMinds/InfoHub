@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    // users
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleException(UserNotFoundException e) {
         ErrorResponse response = new ErrorResponse(
@@ -17,6 +19,27 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NoPermissionException.class)
+    public ResponseEntity<ErrorResponse> handleException(NoPermissionException e) {
+        ErrorResponse response = new ErrorResponse(
+                "No permission",
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleException(UnauthorizedException e) {
+        ErrorResponse response = new ErrorResponse(
+                "No authorization",
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    // article
     @ExceptionHandler(ArticleNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleException(ArticleNotFoundException e) {
         ErrorResponse response = new ErrorResponse(
@@ -27,17 +50,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-
-    @ExceptionHandler(UserNotAuthorArticleException.class)
-    public ResponseEntity<ErrorResponse> handleException(UserNotAuthorArticleException e) {
-        ErrorResponse response = new ErrorResponse(
-                "No permission",
-                System.currentTimeMillis()
-        );
-
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
-
+    //comment
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleException(CommentNotFoundException e) {
         ErrorResponse response = new ErrorResponse(

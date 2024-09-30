@@ -33,7 +33,7 @@ public class CommentConvertor {
         );
     }
 
-    public static Comment toDomain(CommentDTO dto, User user, Article article) {
+    public Comment convertToDomain(CommentDTO dto, User user, Article article) {
         Comment comment = new Comment(user, article, dto.text(), dto.rating());
         comment.setReplyTo(dto.replyTo());
         return comment;

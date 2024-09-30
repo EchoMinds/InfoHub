@@ -7,9 +7,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import ru.echominds.infohub.domain.Article;
+import ru.echominds.infohub.domain.Comment;
 import ru.echominds.infohub.domain.Role;
 import ru.echominds.infohub.domain.User;
-import ru.echominds.infohub.exceptions.UserNotAuthorArticleException;
+import ru.echominds.infohub.exceptions.NoPermissionException;
+import ru.echominds.infohub.exceptions.UnauthorizedException;
 import ru.echominds.infohub.exceptions.UserNotFoundException;
 import ru.echominds.infohub.repositories.UserRepository;
 
@@ -34,12 +36,20 @@ public class SecurityAuthorizationManager {
     }
 
     public void getAccessForArticle(Article article) {
-
-        if (getCurrentUser() == null) throw new UserNotFoundException();
+        if (getCurrentUser() == null) throw new UnauthorizedException();
         if (!getCurrentUser().getId().equals(article.getUser().getId()) ||
                 !(getCurrentUser().getRoles().contains(Role.ADMINISTRATOR)
                         && getCurrentUser().getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
-            throw new UserNotAuthorArticleException();
+            throw new NoPermissionException();
+        }
+    }
+
+    public void getAccessForComment(Comment comment) {
+        if (getCurrentUser() == null) throw new UnauthorizedException();
+        if (!getCurrentUser().getId().equals(comment.getUser().getId()) ||
+                !(getCurrentUser().getRoles().contains(Role.ADMINISTRATOR)
+                        && getCurrentUser().getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
+            throw new NoPermissionException();
         }
     }
 

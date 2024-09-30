@@ -9,20 +9,41 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Table(name = "Article")
 public class Article extends Auditable {
+    public Article() {}
+
+    public Article(User user, String title, String text, Long views) {
+        this.user = user;
+        this.title = title;
+        this.text = text;
+        this.views = views;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private Long articleId;
 
+    //author article
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "text")
+    private String text;
+
+    @Column(name = "views")
     private Long views;
 
-    // Хз как сделаем теги
-
-    // +1 и -1
     @OneToMany(mappedBy = "article")
-    private List<Rating> rating;
+    private List<Rating> articleRating;
 
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
+
+    //next issue: tags
 }

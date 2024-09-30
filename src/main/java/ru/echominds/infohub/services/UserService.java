@@ -48,13 +48,6 @@ public class UserService {
         userRepository.save(userFound);
     }
 
-    public void deleteUser(Long id) {
-        // check account
-        User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-
-        userRepository.delete(userFound);
-    }
-
     public String getCurrentUsername(Authentication authentication) {
         Object principal = authentication.getPrincipal();
 

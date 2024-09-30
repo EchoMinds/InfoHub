@@ -27,6 +27,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(httpAuth -> httpAuth
                         .requestMatchers("/api/user").authenticated()
+                        .requestMatchers("/api/article").authenticated()
                         .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .oauth2Login(httpSec -> httpSec

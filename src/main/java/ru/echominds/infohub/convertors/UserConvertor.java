@@ -13,6 +13,7 @@ public class UserConvertor {
 
     public UserDTO convertUserToUserDTO(User userFound) {
         return new UserDTO(
+                userFound.getId(),
                 userFound.getName(),
                 userFound.getEmail(),
                 userFound.getAvatar());

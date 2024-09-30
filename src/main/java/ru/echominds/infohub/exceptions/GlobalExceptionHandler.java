@@ -14,7 +14,6 @@ public class GlobalExceptionHandler {
                 System.currentTimeMillis()
         );
 
-        //return 404
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -25,19 +24,27 @@ public class GlobalExceptionHandler {
                 System.currentTimeMillis()
         );
 
-        //return 404
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 
-    @ExceptionHandler(UserNotAuthorArticle.class)
-    public ResponseEntity<ErrorResponse> handleException(UserNotAuthorArticle e) {
+    @ExceptionHandler(UserNotAuthorArticleException.class)
+    public ResponseEntity<ErrorResponse> handleException(UserNotAuthorArticleException e) {
         ErrorResponse response = new ErrorResponse(
-                "Article not found",
+                "No permission",
                 System.currentTimeMillis()
         );
 
-        //return 404
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleException(CommentNotFoundException e) {
+        ErrorResponse response = new ErrorResponse(
+                "Comment not found",
+                System.currentTimeMillis()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }

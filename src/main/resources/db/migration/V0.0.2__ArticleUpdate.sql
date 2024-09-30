@@ -9,6 +9,7 @@ CREATE TABLE comment
     article_id BIGINT                   NOT NULL,
     text       TEXT,
     rating     BIGINT,
+    reply_to   BIGINT REFERENCES comment (id),
 
     FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE,
     FOREIGN KEY (article_id) REFERENCES Article (id) ON DELETE CASCADE,

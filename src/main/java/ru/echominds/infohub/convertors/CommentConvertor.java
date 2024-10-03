@@ -17,6 +17,7 @@ public class CommentConvertor {
     private final CommentRepository commentRepository;
 
     public CommentDTO convertToDTO(Comment comment, List<Comment> commentList) {
+        //вывести в сервис
         List<CommentDTO> subComments = commentList.stream()
                 .filter(subComm -> subComm.getReplyTo() != null && subComm.getReplyTo().equals(comment.getId()))
                 .map(subComm -> convertToDTO(subComm, commentList))
@@ -25,7 +26,7 @@ public class CommentConvertor {
         return new CommentDTO(
                 comment.getId(),
                 comment.getUser().getId(),
-                comment.getArticle().getArticleId(),
+                comment.getArticle().getId(),
                 comment.getReplyTo(),
                 comment.getRating(),
                 comment.getText(),

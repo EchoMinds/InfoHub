@@ -15,21 +15,17 @@ import java.util.List;
 public class Article extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long articleId;
+    private Long id;
 
     //author article
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "text")
     private String text;
 
-    @Column(name = "views")
     private Long views;
 
     @OneToMany(mappedBy = "article")

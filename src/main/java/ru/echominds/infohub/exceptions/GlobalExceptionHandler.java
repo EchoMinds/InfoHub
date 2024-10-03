@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
     // users
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleException(UserNotFoundException e) {
@@ -15,7 +14,6 @@ public class GlobalExceptionHandler {
                 "User not found",
                 System.currentTimeMillis()
         );
-
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -25,7 +23,6 @@ public class GlobalExceptionHandler {
                 "No permission",
                 System.currentTimeMillis()
         );
-
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -35,7 +32,6 @@ public class GlobalExceptionHandler {
                 "No authorization",
                 System.currentTimeMillis()
         );
-
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
@@ -46,7 +42,6 @@ public class GlobalExceptionHandler {
                 "Article not found",
                 System.currentTimeMillis()
         );
-
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -57,21 +52,8 @@ public class GlobalExceptionHandler {
                 "Comment not found",
                 System.currentTimeMillis()
         );
-
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-
-    @ExceptionHandler(ArticleNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleException(ArticleNotFoundException e) {
-        ErrorResponse response = new ErrorResponse(
-                "Article not found",
-                System.currentTimeMillis()
-        );
-
-        //return 404
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
 
     @ExceptionHandler(UserNotAuthorArticle.class)
     public ResponseEntity<ErrorResponse> handleException(UserNotAuthorArticle e) {
@@ -79,8 +61,6 @@ public class GlobalExceptionHandler {
                 "Article not found",
                 System.currentTimeMillis()
         );
-
-        //return 404
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 }

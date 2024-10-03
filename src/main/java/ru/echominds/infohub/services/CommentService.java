@@ -34,8 +34,10 @@ public class CommentService {
     }
 
     public List<CommentDTO> getAllCommentsForArticle(Long articleId, Pageable pageable) {
+        List<Comment> subComm = commentRepository.findAllByReplyTo(articleId);
+
         return commentRepository.findCommentByArticleId(articleId, pageable).stream()
-                .map(comment -> commentConvertor.convertToDTO(comment, commentRepository.findAll())).toList();
+                .map(comment -> commentConvertor.convertToDTO(comment, subComm)).toList();
     }
 
     public void createComment(CommentDTO commentDTO) {
@@ -77,10 +79,12 @@ public class CommentService {
                 .orElseThrow(UserNotFoundException::new);
         author.getComments().remove(deleteableComment);
 
-        Article article = articleRepository.findById(deleteableComment.getArticle().getArticleId()).
+        Article article = articleRepository.findById(deleteableComment.getArticle().getId()).
                 orElseThrow(ArticleNotFoundException::new);
         article.getComments().remove(deleteableComment);
 
+        userRepository.save(author);
+        articleRepository.save(article);
         commentRepository.delete(deleteableComment);
     }
 }

@@ -28,14 +28,14 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
-        Long totalRating = articleRepository.getArticleRatingById(article.getArticleId());
+        Long totalRating = articleRepository.getArticleRatingById(article.getId());
 
         return articleConvertor.convertArticleToArticleDTO(article, totalRating);
     }
 
     public List<ArticleDTO> getAllArticles(PageRequest pageRequest) {
         return articleRepository.findAll(pageRequest).stream().map(x -> articleConvertor.convertArticleToArticleDTO(
-                x, articleRepository.getArticleRatingById(x.getArticleId())
+                x, articleRepository.getArticleRatingById(x.getId())
         )).toList();
     }
 

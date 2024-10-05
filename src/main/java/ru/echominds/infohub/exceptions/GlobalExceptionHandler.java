@@ -5,62 +5,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    // users
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleException(UserNotFoundException e) {
+
+    //my Exceptions
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorResponse> handleApiException(ApiException ex) {
         ErrorResponse response = new ErrorResponse(
-                "User not found",
+                ex.getMessage(),
                 System.currentTimeMillis()
         );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, ex.getStatus());
     }
 
-    @ExceptionHandler(NoPermissionException.class)
-    public ResponseEntity<ErrorResponse> handleException(NoPermissionException e) {
+    //imposters
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         ErrorResponse response = new ErrorResponse(
-                "No permission",
+                "An unexpected error occurred",
                 System.currentTimeMillis()
         );
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ErrorResponse> handleException(UnauthorizedException e) {
-        ErrorResponse response = new ErrorResponse(
-                "No authorization",
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
-
-    // article
-    @ExceptionHandler(ArticleNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleException(ArticleNotFoundException e) {
-        ErrorResponse response = new ErrorResponse(
-                "Article not found",
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    //comment
-    @ExceptionHandler(CommentNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleException(CommentNotFoundException e) {
-        ErrorResponse response = new ErrorResponse(
-                "Comment not found",
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(UserNotAuthorArticle.class)
-    public ResponseEntity<ErrorResponse> handleException(UserNotAuthorArticle e) {
-        ErrorResponse response = new ErrorResponse(
-                "Article not found",
-                System.currentTimeMillis()
-        );
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

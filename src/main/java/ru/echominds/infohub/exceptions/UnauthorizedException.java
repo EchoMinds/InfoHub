@@ -1,4 +1,9 @@
 package ru.echominds.infohub.exceptions;
 
-public class UnauthorizedException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class UnauthorizedException extends ApiException {
+    public UnauthorizedException() {
+        super("No authorization", HttpStatus.FORBIDDEN);
+    }
 }

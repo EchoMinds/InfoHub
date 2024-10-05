@@ -30,14 +30,15 @@ public class CommentService {
     private final SecurityAuthorizationManager securityAuthorizationManager;
 
     public CommentDTO getCommentById(Long id) {
-        return commentConvertor.convertToDTO(commentRepository.findById(id).orElseThrow(), commentRepository.findAll());
+        return commentConvertor.convertToDTO(commentRepository.findById(id).orElseThrow(CommentNotFoundException::new),
+                commentRepository.findAllByReplyTo(id));
     }
 
     public List<CommentDTO> getAllCommentsForArticle(Long articleId, Pageable pageable) {
-        List<Comment> subComm = commentRepository.findAllByReplyTo(articleId);
-
         return commentRepository.findCommentByArticleId(articleId, pageable).stream()
-                .map(comment -> commentConvertor.convertToDTO(comment, subComm)).toList();
+                .map(comment ->
+                        commentConvertor.convertToDTO(comment, commentRepository.findAllByReplyTo(comment.getId())))
+                .toList();
     }
 
     public void createComment(CommentDTO commentDTO) {

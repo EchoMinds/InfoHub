@@ -18,7 +18,6 @@ import ru.echominds.infohub.repositories.UserRepository;
 @Component
 @RequiredArgsConstructor
 public class SecurityAuthorizationManager {
-
     private final UserRepository userRepository;
 
     public User getCurrentUser() {
@@ -31,7 +30,6 @@ public class SecurityAuthorizationManager {
 
             return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         }
-
         return null;
     }
 
@@ -52,5 +50,4 @@ public class SecurityAuthorizationManager {
             throw new NoPermissionException();
         }
     }
-
 }

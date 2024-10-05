@@ -14,7 +14,6 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-
     @Query(value = "SELECT * FROM comment WHERE article_id = :#{#id}", nativeQuery = true)
     Page<Comment> findCommentByArticleId(@Param("id") Long id, Pageable pageable);
 

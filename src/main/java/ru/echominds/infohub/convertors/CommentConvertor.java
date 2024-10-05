@@ -13,7 +13,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class CommentConvertor {
-
     private final CommentRepository commentRepository;
 
     public CommentDTO convertToDTO(Comment comment, List<Comment> commentList) {
@@ -36,7 +35,9 @@ public class CommentConvertor {
 
     public Comment convertToDomain(CommentDTO dto, User user, Article article) {
         Comment comment = new Comment(user, article, dto.text(), dto.rating());
+
         comment.setReplyTo(dto.replyTo());
+
         return comment;
     }
 }

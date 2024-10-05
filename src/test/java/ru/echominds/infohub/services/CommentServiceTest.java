@@ -194,5 +194,4 @@ class CommentServiceTest {
 
         assertThrows(ArticleNotFoundException.class, () -> commentService.deleteComment(1L));
     }
-
 }

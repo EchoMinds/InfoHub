@@ -60,7 +60,6 @@ public class CommentService {
     public void updateComment(Long id, UpdatedCommentDto updatedCommentDTO) {
         Comment updateableComment = commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
 
-        //security
         securityAuthorizationManager.getAccessForComment(updateableComment);
 
         updateableComment.setRating(

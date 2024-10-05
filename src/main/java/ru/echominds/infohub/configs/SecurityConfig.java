@@ -15,7 +15,6 @@ import ru.echominds.infohub.security.CustomOAuth2Service;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
     @Autowired
     private CustomOAuth2Service customOAuth2Service;
 

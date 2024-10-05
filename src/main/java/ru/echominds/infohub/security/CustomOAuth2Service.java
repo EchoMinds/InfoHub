@@ -18,7 +18,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-
     private final UserRepository userRepository;
 
     @Override
@@ -47,5 +46,6 @@ public class CustomOAuth2Service implements OAuth2UserService<OAuth2UserRequest,
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
                 oAuth2User.getAttributes(),
                 "email"  // Основной атрибут
-        );    }
+        );
+    }
 }

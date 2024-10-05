@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import ru.echominds.infohub.dtos.CommentDTO;
 import ru.echominds.infohub.dtos.UpdatedCommentDto;
 import ru.echominds.infohub.services.CommentService;
@@ -15,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/article")
 public class CommentController {
-
     private final CommentService commentService;
 
     @GetMapping("/comments/{commentId}")
@@ -27,12 +25,14 @@ public class CommentController {
     public HttpStatus updateComment(@PathVariable Long commentId,
                                     @RequestBody UpdatedCommentDto updatedCommentDto) {
         commentService.updateComment(commentId, updatedCommentDto);
+
         return HttpStatus.NO_CONTENT;
     }
 
     @DeleteMapping("/comments/{commentId}")
     public HttpStatus deleteComment(@PathVariable Long commentId) {
         commentService.deleteComment(commentId);
+
         return HttpStatus.NO_CONTENT;
     }
 
@@ -46,6 +46,7 @@ public class CommentController {
     @PostMapping("/comments")
     public HttpStatus createComment(@RequestBody CommentDTO commentDTO) {
         commentService.createComment(commentDTO);
+
         return HttpStatus.CREATED;
     }
 }

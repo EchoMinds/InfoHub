@@ -84,5 +84,4 @@ public class FakeDomain {
                 1L
         );
     }
-
 }

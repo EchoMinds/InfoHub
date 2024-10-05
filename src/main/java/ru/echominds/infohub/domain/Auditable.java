@@ -9,7 +9,6 @@ import java.time.OffsetDateTime;
 
 @Data
 public class Auditable {
-
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;

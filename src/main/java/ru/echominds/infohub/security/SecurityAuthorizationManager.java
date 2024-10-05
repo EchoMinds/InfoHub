@@ -1,6 +1,8 @@
 package ru.echominds.infohub.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +32,18 @@ public class SecurityAuthorizationManager {
 
             return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         }
+
         return null;
+    }
+
+    public ResponseEntity<?> getCurrentUserOrAnonymous() {
+        User user = getCurrentUser();
+
+        if (user == null) {
+            return new ResponseEntity<>("Anonymous", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
     }
 
     public void getAccessForArticle(Article article) {

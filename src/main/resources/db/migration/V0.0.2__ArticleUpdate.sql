@@ -2,7 +2,7 @@ ALTER TABLE "public"."article"
     ALTER COLUMN "created_at" SET DEFAULT now(),
     ALTER COLUMN "updated_at" SET DEFAULT now();
 
-CREATE TABLE comment
+CREATE TABLE IF NOT EXISTS comment
 (
     id         BIGSERIAL PRIMARY KEY,
     user_id    BIGINT                   NOT NULL,

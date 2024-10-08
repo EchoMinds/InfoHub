@@ -3,6 +3,7 @@ package ru.echominds.infohub.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -10,33 +11,20 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "Article")
+@NoArgsConstructor
 public class Article extends Auditable {
-    public Article() {}
-
-    public Article(User user, String title, String text, Long views) {
-        this.user = user;
-        this.title = title;
-        this.text = text;
-        this.views = views;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long articleId;
+    private Long id;
 
-    //author article
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "text")
     private String text;
 
-    @Column(name = "views")
     private Long views;
 
     @OneToMany(mappedBy = "article")
@@ -45,5 +33,11 @@ public class Article extends Auditable {
     @OneToMany(mappedBy = "article")
     private List<Comment> comments;
 
-    //next issue: tags
+    public Article(User user, String title, String text, Long views) {
+        this.user = user;
+        this.title = title;
+        this.text = text;
+        this.views = views;
+    }
 }
+

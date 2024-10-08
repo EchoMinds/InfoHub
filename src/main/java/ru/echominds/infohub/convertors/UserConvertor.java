@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Component
 public class UserConvertor {
-
     public UserDTO convertUserToUserDTO(User userFound) {
         return new UserDTO(
                 userFound.getId(),

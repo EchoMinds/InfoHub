@@ -30,6 +30,7 @@ public class ArticleController {
     @PostMapping
     public HttpStatus createArticle(@RequestBody ArticleDTO article) {
         articleService.createArticle(article);
+
         return HttpStatus.CREATED;
     }
 

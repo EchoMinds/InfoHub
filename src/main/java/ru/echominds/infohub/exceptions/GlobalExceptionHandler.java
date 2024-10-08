@@ -7,37 +7,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleException(UserNotFoundException e) {
+    //my Exceptions
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorResponse> handleApiException(ApiException ex) {
         ErrorResponse response = new ErrorResponse(
-                "User not found",
+                ex.getMessage(),
                 System.currentTimeMillis()
         );
-
-        //return 404
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, ex.getStatus());
     }
 
-    @ExceptionHandler(ArticleNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleException(ArticleNotFoundException e) {
+    //imposters
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         ErrorResponse response = new ErrorResponse(
-                "Article not found",
+                "An unexpected error occurred",
                 System.currentTimeMillis()
         );
-
-        //return 404
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-
-    @ExceptionHandler(UserNotAuthorArticle.class)
-    public ResponseEntity<ErrorResponse> handleException(UserNotAuthorArticle e) {
-        ErrorResponse response = new ErrorResponse(
-                "Article not found",
-                System.currentTimeMillis()
-        );
-
-        //return 404
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

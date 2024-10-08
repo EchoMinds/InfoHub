@@ -3,15 +3,16 @@ package ru.echominds.infohub.domain;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "Comment")
+@NoArgsConstructor
 public class Comment extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,9 +23,18 @@ public class Comment extends Auditable {
     @JoinColumn(name = "article_id", referencedColumnName = "id")
     private Article article;
 
-    @Column(name = "text")
     private String text;
 
-    @Column(name = "rating")
     private Long rating;
+
+    @Column(name = "reply_to")
+    private Long replyTo;
+
+    public Comment(User user, Article article, String text, Long rating) {
+        this.user = user;
+        this.article = article;
+        this.text = text;
+        this.rating = rating;
+    }
 }
+

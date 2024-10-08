@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-
     @InjectMocks
     private UserService userService;
 
@@ -37,7 +36,6 @@ class UserServiceTest {
     @BeforeEach
     void init() {
         fakeUser = FakeDomain.createFakeUser();
-
     }
 
     @Test
@@ -51,6 +49,5 @@ class UserServiceTest {
     @Test
     void test_getUserById_shouldReturnError() {
         assertThrows(UserNotFoundException.class, () -> userService.getUser(2L));
-
     }
 }

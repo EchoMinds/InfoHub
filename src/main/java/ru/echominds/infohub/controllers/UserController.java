@@ -3,8 +3,7 @@ package ru.echominds.infohub.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.echominds.infohub.dtos.UserDTO;
 import ru.echominds.infohub.services.UserService;
@@ -17,14 +16,11 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    // получаем юзера через Секур
     @GetMapping
-    public String getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return userService.getCurrentUsername(authentication);
+    public ResponseEntity<?> getCurrentUser() {
+        return userService.getUser();
     }
 
-    // для поиска по id
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable Long id) {

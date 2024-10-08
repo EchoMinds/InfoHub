@@ -5,11 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 @Entity
 @Data
@@ -43,8 +41,8 @@ public class User extends Auditable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Article> Articles;
 
-//    соц кредит будет как типа рейтинг для профиля
-//    private Long socialCredit;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     public User(String name, String avatar,
                 String email, List<Rating> ArticleRating,

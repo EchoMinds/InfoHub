@@ -3,10 +3,7 @@ package ru.echominds.infohub;
 import ru.echominds.infohub.domain.Article;
 import ru.echominds.infohub.domain.Comment;
 import ru.echominds.infohub.domain.User;
-import ru.echominds.infohub.dtos.ArticleDTO;
-import ru.echominds.infohub.dtos.CommentDTO;
-import ru.echominds.infohub.dtos.UpdatedCommentDto;
-import ru.echominds.infohub.dtos.UserDTO;
+import ru.echominds.infohub.dtos.*;
 
 import java.util.ArrayList;
 
@@ -28,6 +25,14 @@ public class FakeDomain {
                 "fake user",
                 "fake@email.com",
                 "fake avatar"
+        );
+    }
+
+    public static UpdatedUserDTO createFakeUpdatedUserDTO() {
+        return new UpdatedUserDTO(
+                "New Name",
+                "new@example.com",
+                "avatarUrl"
         );
     }
 

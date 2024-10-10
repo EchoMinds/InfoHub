@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.echominds.infohub.dtos.UpdatedUserDTO;
 import ru.echominds.infohub.dtos.UserDTO;
 import ru.echominds.infohub.services.UserService;
 
@@ -33,16 +34,16 @@ public class UserController {
         return userService.getAllUsers(PageRequest.of(offset, limit));
     }
 
-    @PostMapping
-    public HttpStatus createUser(@RequestBody UserDTO user) {
-        userService.create(user);
+    @PatchMapping("/{id}")
+    public HttpStatus updateUser(@RequestBody UpdatedUserDTO userDto, @PathVariable Long id) {
+        userService.updateUser(id, userDto);
 
-        return HttpStatus.CREATED;
+        return HttpStatus.NO_CONTENT;
     }
 
-    @PatchMapping("/{id}")
-    public HttpStatus updateUser(@RequestBody UserDTO userDto, @PathVariable Long id) {
-        userService.updateUser(id, userDto);
+    @PatchMapping
+    public HttpStatus updateUser(@RequestBody UpdatedUserDTO userDto) {
+        userService.updateUser(userDto);
 
         return HttpStatus.NO_CONTENT;
     }

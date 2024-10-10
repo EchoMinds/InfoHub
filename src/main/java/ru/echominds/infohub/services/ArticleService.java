@@ -40,8 +40,6 @@ public class ArticleService {
 
     // check auth
     public void createArticle(ArticleDTO articleDTO) {
-        if (authorizationManager.getCurrentUser() == null) throw new UserNotFoundException();
-
         User author = userRepository.findById(articleDTO.userDTO().id()).orElseThrow(UserNotFoundException::new);
 
         articleRepository.save(articleConvertor.convertArticleDTOtoArticle(articleDTO, author));

@@ -1,7 +1,3 @@
-ALTER TABLE "public"."article"
-    ALTER COLUMN "created_at" SET DEFAULT now(),
-    ALTER COLUMN "updated_at" SET DEFAULT now();
-
 CREATE TABLE IF NOT EXISTS comment
 (
     id         BIGSERIAL PRIMARY KEY,
@@ -18,6 +14,6 @@ CREATE TABLE IF NOT EXISTS comment
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-ALTER TABLE "public"."comment"
+ALTER TABLE "comment"
     ALTER COLUMN "created_at" SET DEFAULT now(),
     ALTER COLUMN "updated_at" SET DEFAULT now();

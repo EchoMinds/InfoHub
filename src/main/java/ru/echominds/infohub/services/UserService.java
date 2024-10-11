@@ -6,10 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.echominds.infohub.convertors.UserConvertor;
+import ru.echominds.infohub.domain.AccountSuspension;
 import ru.echominds.infohub.domain.User;
+import ru.echominds.infohub.dtos.BanUserInformationDTO;
 import ru.echominds.infohub.dtos.UpdatedUserDTO;
 import ru.echominds.infohub.dtos.UserDTO;
+import ru.echominds.infohub.exceptions.AccountNotBannedException;
 import ru.echominds.infohub.exceptions.UserNotFoundException;
+import ru.echominds.infohub.repositories.AccountSuspensionRepository;
 import ru.echominds.infohub.repositories.UserRepository;
 import ru.echominds.infohub.security.SecurityAuthorizationManager;
 
@@ -22,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserConvertor userConvertor;
     private final SecurityAuthorizationManager securityAuthorizationManager;
+    private final AccountSuspensionRepository accountSuspensionRepository;
 
     public ResponseEntity<?> getUser() {
         Object currentUserOrAnonymous = securityAuthorizationManager.getCurrentUserOrAnonymous();
@@ -70,23 +75,36 @@ public class UserService {
         userRepository.save(currentUser);
     }
 
-    public void banUser(Long id) {
-        User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-
+    public void banUser(Long id, BanUserInformationDTO banUserInformationDTO) {
         securityAuthorizationManager.checkAdminRole();
 
-        userFound.setIs_banned(Boolean.TRUE);
+        User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        AccountSuspension accountSuspension = accountSuspensionRepository.findByUser(userFound)
+                .orElse(new AccountSuspension());
 
-        userRepository.save(userFound);
+        if (banUserInformationDTO.banTime().isEmpty()) {
+            accountSuspension.setIsPermanentBan(Boolean.TRUE);
+        } else {
+            accountSuspension.setIsPermanentBan(Boolean.FALSE);
+            accountSuspension.setBanTime(banUserInformationDTO.banTime().get());
+        }
+
+        accountSuspension.setReasonBan(banUserInformationDTO.reasonBan());
+        accountSuspension.setUser(userFound);
+        accountSuspension.setAdmin(securityAuthorizationManager.getCurrentUser());
+        accountSuspension.setIsBanned(Boolean.TRUE);
+
+        accountSuspensionRepository.save(accountSuspension);
     }
 
     public void unbanUser(Long id) {
-        User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-
         securityAuthorizationManager.checkAdminRole();
 
-        userFound.setIs_banned(Boolean.FALSE);
+        User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
-        userRepository.save(userFound);
+        AccountSuspension accountSuspension = accountSuspensionRepository.findByUser(userFound)
+                .orElseThrow(AccountNotBannedException::new);
+
+        accountSuspensionRepository.delete(accountSuspension);
     }
 }

@@ -6,20 +6,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
-import ru.echominds.infohub.domain.Article;
-import ru.echominds.infohub.domain.Comment;
-import ru.echominds.infohub.domain.Role;
-import ru.echominds.infohub.domain.User;
+import ru.echominds.infohub.domain.*;
 import ru.echominds.infohub.exceptions.NoPermissionException;
 import ru.echominds.infohub.exceptions.UnauthorizedException;
 import ru.echominds.infohub.exceptions.UserBannedException;
 import ru.echominds.infohub.exceptions.UserNotFoundException;
+import ru.echominds.infohub.repositories.AccountSuspensionRepository;
 import ru.echominds.infohub.repositories.UserRepository;
+
+import java.time.OffsetDateTime;
 
 @Component
 @RequiredArgsConstructor
 public class SecurityAuthorizationManager {
     private final UserRepository userRepository;
+    private final AccountSuspensionRepository accountSuspensionRepository;
 
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -82,6 +83,29 @@ public class SecurityAuthorizationManager {
     }
 
     private void checkUserIsBanned(User user) {
-        if (user.getIs_banned()) throw new UserBannedException();
+        AccountSuspension currentAccountSuspension = accountSuspensionRepository.findByUser(user).orElse(null);
+
+        if (currentAccountSuspension != null) {
+            boolean isBanned = currentAccountSuspension.getIsBanned() == Boolean.TRUE;
+            boolean isPermanentBan = currentAccountSuspension.getIsPermanentBan() == Boolean.TRUE;
+
+            if (isBanned) {
+                if (!isPermanentBan) {
+                    if (OffsetDateTime.now().isBefore(currentAccountSuspension.getBanTime())) {
+                        throw new UserBannedException(
+                                currentAccountSuspension.getBanTime(),
+                                currentAccountSuspension.getAdmin().getName(),
+                                currentAccountSuspension.getReasonBan());
+                    } else {
+                        accountSuspensionRepository.delete(currentAccountSuspension);
+                    }
+                } else {
+                    throw new UserBannedException(
+                            currentAccountSuspension.getAdmin().getName(),
+                            currentAccountSuspension.getReasonBan()
+                    );
+                }
+            }
+        }
     }
 }

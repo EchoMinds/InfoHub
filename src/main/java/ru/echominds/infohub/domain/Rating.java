@@ -3,14 +3,16 @@ package ru.echominds.infohub.domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "rating", schema = "public")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rating {
+public class Rating extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

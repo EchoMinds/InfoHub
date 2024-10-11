@@ -32,8 +32,6 @@ public class User extends Auditable {
     @OneToMany(mappedBy = "user")
     private List<Rating> ArticleRating;
 
-    private Boolean is_banned;
-
     // ElementCollection хрень что бы храниц многа ролей и шоб пользоваться енумом, а не делать отдельны класс
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)

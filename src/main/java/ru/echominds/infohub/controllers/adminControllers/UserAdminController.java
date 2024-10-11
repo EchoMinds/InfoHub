@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.echominds.infohub.dtos.BanUserInformationDTO;
 import ru.echominds.infohub.dtos.UserDTO;
 import ru.echominds.infohub.services.UserService;
 
@@ -22,8 +23,9 @@ public class UserAdminController {
     }
 
     @PatchMapping("/ban/{userId}")
-    public HttpStatus banUser(@PathVariable("userId") Long userId) {
-        userService.banUser(userId);
+    public HttpStatus banUser(@PathVariable("userId") Long userId,
+                              @RequestBody BanUserInformationDTO banUserInformationDTO) {
+        userService.banUser(userId, banUserInformationDTO);
 
         return HttpStatus.OK;
     }

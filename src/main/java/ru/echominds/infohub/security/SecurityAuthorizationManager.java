@@ -1,8 +1,6 @@
 package ru.echominds.infohub.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +12,7 @@ import ru.echominds.infohub.domain.Role;
 import ru.echominds.infohub.domain.User;
 import ru.echominds.infohub.exceptions.NoPermissionException;
 import ru.echominds.infohub.exceptions.UnauthorizedException;
+import ru.echominds.infohub.exceptions.UserBannedException;
 import ru.echominds.infohub.exceptions.UserNotFoundException;
 import ru.echominds.infohub.repositories.UserRepository;
 
@@ -32,8 +31,11 @@ public class SecurityAuthorizationManager {
         try {
             OAuth2User curUser = (OAuth2User) auth.getPrincipal();
             String email = curUser.getAttribute("email");
+            User currnetUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-            return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+            checkUserIsBanned(currnetUser);
+
+            return currnetUser;
         } catch (ClassCastException | NullPointerException e) {
             throw new UnauthorizedException();
         }
@@ -77,5 +79,9 @@ public class SecurityAuthorizationManager {
                 && currentUser.getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
             throw new NoPermissionException();
         }
+    }
+
+    private void checkUserIsBanned(User user) {
+        if (user.getIs_banned()) throw new UserBannedException();
     }
 }

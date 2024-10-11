@@ -3,10 +3,11 @@ CREATE TABLE IF NOT EXISTS "user"
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "name"     VARCHAR                  NOT NULL,
     avatar_url VARCHAR,
-    email      VARCHAR                  not null,
+    email      VARCHAR                  NOT NULL,
+    is_banned  BOOLEAN                  NOT NULL DEFAULT FALSE,
 
-    created_at timestamp with time zone not null,
-    updated_at timestamp with time zone not null
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS article
@@ -17,8 +18,8 @@ CREATE TABLE IF NOT EXISTS article
     text       TEXT,
     views      BIGINT DEFAULT 0,
 
-    created_at timestamp with time zone                        not null,
-    updated_at timestamp with time zone                        not null
+    created_at TIMESTAMP WITH TIME ZONE                        NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE                        NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS rating

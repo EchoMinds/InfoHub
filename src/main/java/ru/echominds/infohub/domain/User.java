@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,8 @@ public class User extends Auditable {
     // рейтинги которые человек ставил на статьи
     @OneToMany(mappedBy = "user")
     private List<Rating> ArticleRating;
+
+    private Boolean is_banned;
 
     // ElementCollection хрень что бы храниц многа ролей и шоб пользоваться енумом, а не делать отдельны класс
     @ElementCollection(fetch = FetchType.EAGER)

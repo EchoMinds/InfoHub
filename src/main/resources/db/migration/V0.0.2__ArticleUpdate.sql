@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS comment
     FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE,
     FOREIGN KEY (article_id) REFERENCES Article (id) ON DELETE CASCADE,
 
-    created_at timestamp with time zone not null,
-    updated_at timestamp with time zone not null
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 ALTER TABLE "public"."comment"

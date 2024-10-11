@@ -28,6 +28,7 @@ public class UserController {
         return userService.getUser(id);
     }
 
+    //need admin role
     @GetMapping("/all")
     public List<UserDTO> getAllUsers(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
                                      @RequestParam(value = "limit", defaultValue = "10") Integer limit) {

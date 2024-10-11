@@ -69,4 +69,24 @@ public class UserService {
 
         userRepository.save(currentUser);
     }
+
+    public void banUser(Long id) {
+        User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        securityAuthorizationManager.checkAdminRole();
+
+        userFound.setIs_banned(Boolean.TRUE);
+
+        userRepository.save(userFound);
+    }
+
+    public void unbanUser(Long id) {
+        User userFound = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        securityAuthorizationManager.checkAdminRole();
+
+        userFound.setIs_banned(Boolean.FALSE);
+
+        userRepository.save(userFound);
+    }
 }

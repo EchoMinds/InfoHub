@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class UnauthorizedException extends ApiException {
     public UnauthorizedException() {
-        super("No authorization", HttpStatus.FORBIDDEN);
+        super("No authorization, please registration with your google account!", HttpStatus.FORBIDDEN);
     }
 }

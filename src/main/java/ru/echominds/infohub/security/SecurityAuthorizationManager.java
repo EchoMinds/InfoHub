@@ -25,41 +25,56 @@ public class SecurityAuthorizationManager {
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (!(auth instanceof AnonymousAuthenticationToken) && auth != null) {
-            //get curUser
+        if (auth == null) {
+            throw new UnauthorizedException();
+        }
+
+        try {
             OAuth2User curUser = (OAuth2User) auth.getPrincipal();
             String email = curUser.getAttribute("email");
 
             return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        } catch (ClassCastException | NullPointerException e) {
+            throw new UnauthorizedException();
         }
-
-        return null;
     }
 
-    public ResponseEntity<?> getCurrentUserOrAnonymous() {
-        User user = getCurrentUser();
+    public Object getCurrentUserOrAnonymous() {
+        //check Anonymous
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (user == null) {
-            return new ResponseEntity<>("Anonymous", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+        if ((auth instanceof AnonymousAuthenticationToken) || auth == null) {
+            return "Anonymous";
         }
+
+        return getCurrentUser();
     }
 
     public void getAccessForArticle(Article article) {
-        if (getCurrentUser() == null) throw new UnauthorizedException();
-        if (!getCurrentUser().getId().equals(article.getUser().getId()) ||
-                !(getCurrentUser().getRoles().contains(Role.ADMINISTRATOR)
-                        && getCurrentUser().getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
+        User currentUser = getCurrentUser();
+
+        if (!currentUser.getId().equals(article.getUser().getId()) ||
+                !(currentUser.getRoles().contains(Role.ADMINISTRATOR)
+                        && currentUser.getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
             throw new NoPermissionException();
         }
     }
 
     public void getAccessForComment(Comment comment) {
-        if (getCurrentUser() == null) throw new UnauthorizedException();
-        if (!getCurrentUser().getId().equals(comment.getUser().getId()) ||
-                !(getCurrentUser().getRoles().contains(Role.ADMINISTRATOR)
-                        && getCurrentUser().getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
+        User currentUser = getCurrentUser();
+
+        if (!currentUser.getId().equals(comment.getUser().getId()) ||
+                !(currentUser.getRoles().contains(Role.ADMINISTRATOR)
+                        && currentUser.getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
+            throw new NoPermissionException();
+        }
+    }
+
+    public void checkAdminRole() {
+        User currentUser = getCurrentUser();
+
+        if (!(currentUser.getRoles().contains(Role.ADMINISTRATOR)
+                && currentUser.getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
             throw new NoPermissionException();
         }
     }

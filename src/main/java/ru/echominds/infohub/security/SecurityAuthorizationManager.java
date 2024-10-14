@@ -1,26 +1,26 @@
 package ru.echominds.infohub.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
-import ru.echominds.infohub.domain.Article;
-import ru.echominds.infohub.domain.Comment;
-import ru.echominds.infohub.domain.Role;
-import ru.echominds.infohub.domain.User;
+import ru.echominds.infohub.domain.*;
 import ru.echominds.infohub.exceptions.NoPermissionException;
 import ru.echominds.infohub.exceptions.UnauthorizedException;
+import ru.echominds.infohub.exceptions.UserBannedException;
 import ru.echominds.infohub.exceptions.UserNotFoundException;
+import ru.echominds.infohub.repositories.AccountSuspensionRepository;
 import ru.echominds.infohub.repositories.UserRepository;
+
+import java.time.OffsetDateTime;
 
 @Component
 @RequiredArgsConstructor
 public class SecurityAuthorizationManager {
     private final UserRepository userRepository;
+    private final AccountSuspensionRepository accountSuspensionRepository;
 
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -32,8 +32,11 @@ public class SecurityAuthorizationManager {
         try {
             OAuth2User curUser = (OAuth2User) auth.getPrincipal();
             String email = curUser.getAttribute("email");
+            User currnetUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-            return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+            checkUserIsBanned(currnetUser);
+
+            return currnetUser;
         } catch (ClassCastException | NullPointerException e) {
             throw new UnauthorizedException();
         }
@@ -76,6 +79,33 @@ public class SecurityAuthorizationManager {
         if (!(currentUser.getRoles().contains(Role.ADMINISTRATOR)
                 && currentUser.getRoles().contains(Role.HEAD_ADMINISTRATOR))) {
             throw new NoPermissionException();
+        }
+    }
+
+    private void checkUserIsBanned(User user) {
+        AccountSuspension currentAccountSuspension = accountSuspensionRepository.findByUser(user).orElse(null);
+
+        if (currentAccountSuspension != null) {
+            boolean isBanned = currentAccountSuspension.getIsBanned() == Boolean.TRUE;
+            boolean isPermanentBan = currentAccountSuspension.getIsPermanentBan() == Boolean.TRUE;
+
+            if (isBanned) {
+                if (!isPermanentBan) {
+                    if (OffsetDateTime.now().isBefore(currentAccountSuspension.getBanTime())) {
+                        throw new UserBannedException(
+                                currentAccountSuspension.getBanTime(),
+                                currentAccountSuspension.getAdmin().getName(),
+                                currentAccountSuspension.getReasonBan());
+                    } else {
+                        accountSuspensionRepository.delete(currentAccountSuspension);
+                    }
+                } else {
+                    throw new UserBannedException(
+                            currentAccountSuspension.getAdmin().getName(),
+                            currentAccountSuspension.getReasonBan()
+                    );
+                }
+            }
         }
     }
 }

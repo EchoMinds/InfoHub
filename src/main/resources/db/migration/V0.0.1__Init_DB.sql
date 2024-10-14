@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS "user"
     avatar_url VARCHAR,
     email      VARCHAR                  not null,
 
-    created_at timestamp with time zone not null,
-    updated_at timestamp with time zone not null
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS article
@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS article
     text       TEXT,
     views      BIGINT DEFAULT 0,
 
-    created_at timestamp with time zone                        not null,
-    updated_at timestamp with time zone                        not null
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS rating
@@ -26,7 +26,11 @@ CREATE TABLE IF NOT EXISTS rating
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     value      BIGINT,
     user_id    BIGINT REFERENCES "user" (id) ON DELETE CASCADE  NOT NULL,
-    article_id BIGINT REFERENCES article (id) ON DELETE CASCADE NOT NULL
+    article_id BIGINT REFERENCES article (id) ON DELETE CASCADE NOT NULL,
+
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+
 );
 
 CREATE TABLE IF NOT EXISTS user_roles
@@ -37,6 +41,10 @@ CREATE TABLE IF NOT EXISTS user_roles
     FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 
-ALTER TABLE "public"."user"
+ALTER TABLE "user"
+    ALTER COLUMN "created_at" SET DEFAULT now(),
+    ALTER COLUMN "updated_at" SET DEFAULT now();
+
+ALTER TABLE "article"
     ALTER COLUMN "created_at" SET DEFAULT now(),
     ALTER COLUMN "updated_at" SET DEFAULT now();

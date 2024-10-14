@@ -98,11 +98,12 @@ class UserServiceTest {
     @Test
     void testGetAllUsers() {
         List<User> mockUsers = List.of(fakeUser, fakeUser);
-        List<UserDTO> mockUserDTOs = List.of(fakeUserDTO, fakeUserDTO);
-        List<UserDTO> result = userService.getAllUsers(PageRequest.of(0, 10));
 
         when(userRepository.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(mockUsers));
         when(userConvertor.convertUserToUserDTO(any(User.class))).thenReturn(fakeUserDTO);
+
+        List<UserDTO> mockUserDTOs = List.of(fakeUserDTO, fakeUserDTO);
+        List<UserDTO> result = userService.getAllUsers(PageRequest.of(0, 10));
 
         assertEquals(mockUserDTOs.size(), result.size());
     }

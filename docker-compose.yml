@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:15
+    container_name: java-postgres
+    environment:
+      - 'POSTGRES_DB=InfoHub'
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=relocate'
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./
+    container_name: java-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy  # Запуск backend только если БД готова
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/InfoHub
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: relocate
+
+volumes:
+  pgdata:
